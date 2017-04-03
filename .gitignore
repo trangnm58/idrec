@@ -87,3 +87,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# pydev
+.project
+.pydevproject
+
+segmentation/data/
+segmentation/pickle_data/
