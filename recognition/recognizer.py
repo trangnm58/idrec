@@ -2,21 +2,20 @@ from __future__ import division, print_function, unicode_literals
 import io
 import cv2
 import json
-from os import listdir
 
 from recognition import model_handler
 from recognition.constants import (
 	HEIGHT,
 	WIDTH,
-	DATASET_FOLDER,
 	TRAINED_MODELS,
-	MODEL)
+	MODEL,
+	LABELS)
 
 
 class Recognizer():
 	def __init__(self, prefix=""):
 		self.model = model_handler.load_model(prefix + TRAINED_MODELS + MODEL)
-		self.all_labels = listdir(prefix + DATASET_FOLDER)
+		self.all_labels = LABELS
 
 		with io.open("label_char_map.json", "r", encoding="utf8") as f:
 			self.label_char_map = json.loads(f.read(), encoding="utf8")

@@ -103,6 +103,8 @@ class Dataset():
 
 if __name__ == "__main__":  # process raw data
 	all_labels = listdir(DATASET_FOLDER)
+	all_labels.sort()
+
 	X = np.zeros((0, HEIGHT * WIDTH))
 	Y = np.zeros((0, len(all_labels)), dtype='int')
 	

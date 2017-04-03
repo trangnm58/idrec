@@ -69,10 +69,11 @@ if __name__ == "__main__":
 		recognizer.recognize_as_predict(image, True)
 		recognizer.post_process(image, True)
 		
-		os.rename("segments_as_predict.png", "{}_segments_as_predict.png".format(filename))
-		os.rename("refine_segments.png", "{}_refine_segments.png".format(filename))
-		os.rename("recognize_as_predict.txt", "{}_recognize_as_predict.txt".format(filename))
-		os.rename("postprocess_recognized_text.txt", "{}_postprocess_recognized_text.txt".format(filename))
+		base = filename.split('/')[-1].split('.')[0]
+		os.rename("segments_as_predict.png", "{}_segments_as_predict.png".format(base))
+		os.rename("refine_segments.png", "{}_refine_segments.png".format(base))
+		os.rename("recognize_as_predict.txt", "{}_recognize_as_predict.txt".format(base))
+		# os.rename("postprocess_recognized_text.txt", "{}_postprocess_recognized_text.txt".format(base))
 
 	else:
 		sys.stderr.write('Usage: python idrec2.py [input_file]\n')

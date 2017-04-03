@@ -70,6 +70,8 @@ def g_confusion_matrix(model, X_test, Y_test, write_to_file=False):
 # 	p = model.predict_proba(X_test)  # to predict probability
 
 	all_labels = listdir(DATASET_FOLDER)
+	all_labels.sort()
+
 	target_names = []
 	labels = []
 	for i in range(len(all_labels)):

@@ -1,18 +1,17 @@
 from __future__ import division, print_function, unicode_literals
 import sys
 import numpy as np
-from os import listdir
 from keras.models import model_from_json
 from sklearn.metrics import classification_report, confusion_matrix
 
 sys.path.insert(0, "..")
 from recognition.dataset import Dataset
 from recognition.constants import (
-	DATASET_FOLDER,
 	PICKLE_DATASET,
 	DATA_NAME,
 	IDX_MAP,
-	TRAINED_MODELS)
+	TRAINED_MODELS,
+	LABELS)
 
 
 # print full array
@@ -69,7 +68,8 @@ def g_confusion_matrix(model, X_test, Y_test, write_to_file=False):
 	y_pred = model.predict_classes(X_test)
 # 	p = model.predict_proba(X_test)  # to predict probability
 
-	all_labels = listdir(DATASET_FOLDER)
+	all_labels = LABELS
+
 	target_names = []
 	labels = []
 	for i in range(len(all_labels)):
