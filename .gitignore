@@ -94,3 +94,4 @@ ENV/
 
 segmentation/data/
 segmentation/pickle_data/
+models.py
