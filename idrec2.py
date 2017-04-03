@@ -41,7 +41,7 @@ if __name__ == "__main__":
 			text = '\n\n'.join(['\n'.join([''.join([c for c in s.predict_characters]) for s in f.spans]) for f in image.fields])
 			all_text.append(text)
 			
-			with io.open(OUT_TEXT_FOLDER + "{}".format(base), "w", encoding="utf8") as f:
+			with io.open(OUT_TEXT_FOLDER + "{}.txt".format(base), "w", encoding="utf8") as f:
 				f.write(text)
 				
 			# read ground truth

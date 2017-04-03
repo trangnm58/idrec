@@ -83,6 +83,7 @@ class Field():
 	def _get_contour_boxes(self, img):
 		mask = cv2.bitwise_not(img)
 		contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
 		contour_big_boxes = []
 		for contour in contours:
 			rect = cv2.boundingRect(contour)
