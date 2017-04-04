@@ -38,7 +38,7 @@ if __name__ == "__main__":
 			if not os.path.exists(OUT_TEXT_FOLDER):
 				os.makedirs(OUT_TEXT_FOLDER)
 			
-			text = '\n\n'.join(['\n'.join([''.join([c for c in s.predict_characters]) for s in f.spans]) for f in image.fields])
+			text = '\n\n'.join([f.postprocessed_text for f in image.fields])
 			all_text.append(text)
 			
 			with io.open(OUT_TEXT_FOLDER + "{}.txt".format(base), "w", encoding="utf8") as f:
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 		os.rename("segments_as_predict.png", "{}_segments_as_predict.png".format(base))
 		os.rename("refine_segments.png", "{}_refine_segments.png".format(base))
 		os.rename("recognize_as_predict.txt", "{}_recognize_as_predict.txt".format(base))
-		# os.rename("postprocess_recognized_text.txt", "{}_postprocess_recognized_text.txt".format(base))
+		os.rename("postprocess_recognized_text.txt", "{}_postprocess_recognized_text.txt".format(base))
 
 	else:
 		sys.stderr.write('Usage: python idrec2.py [input_file]\n')

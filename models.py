@@ -43,6 +43,12 @@ class Field():
 		self.name = name
 
 		self.spans = []  # list of Spans
+		
+		self.postprocessed_text = None  # text in field, post-processed
+
+	def get_raw_text(self):
+		text = '\n'.join([''.join([c for c in s.predict_characters]) for s in self.spans])
+		return text
 
 	def hide_title(self, title):
 		self.image[title[0][1]:title[1][1], title[0][0]:title[1][0]] = 255
@@ -82,7 +88,11 @@ class Field():
 
 	def _get_contour_boxes(self, img):
 		mask = cv2.bitwise_not(img)
-		contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+		
+		if cv2.__version__ == '3.1.0':
+			_, contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+		else:
+			contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
 		contour_big_boxes = []
 		for contour in contours:
@@ -102,7 +112,8 @@ class Field():
 
 class Image():
 	def __init__(self, img, name=None):
-		self.image = img
+		self.image = cv2.resize(img, dsize=NORM_SIZE, interpolation=cv2.INTER_CUBIC)
+
 		if name:
 			self.base = name.split('.')[0]
 			self.extension = name.split('.')[1]

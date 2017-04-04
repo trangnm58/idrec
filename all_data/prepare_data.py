@@ -38,9 +38,40 @@ def resize(img_folder):
 		cv2.imwrite(img_folder + n, res)
 
 def create_place_list_file(ground_truth_folder):
-	pass
+	all_names = os.listdir(ground_truth_folder)
+	places = []
+	
+	def add_to_places(places, place):
+		if place not in places:
+			places.append(place)
+	
+	for n in all_names:
+		with open(ground_truth_folder + n, 'r', encoding="utf8") as g:
+			text = g.read().strip()
+		text = text.split('\n')
+		fields = []
+		spans = []
+		for line in text:
+			if line != "":
+				spans.append(line)
+			else:
+				fields.append(spans)
+				spans = []
+		fields.append(spans)
+		
+		bplace = '\n'.join(fields[-2])
+		cplace = '\n'.join(fields[-1])
+		
+		add_to_places(places, bplace)
+		add_to_places(places, cplace)
+	
+	with open("places", "w", encoding="utf8") as f:
+		f.write('\n\n'.join(places))
+		
 
 if __name__ == "__main__":
+	pass
 	# rename(FRONT)
 	# create_ground_truth_file(FRONT, GROUND_TRUTH)
 	# resize(FRONT)
+# 	create_place_list_file(GROUND_TRUTH)

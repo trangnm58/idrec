@@ -7,6 +7,7 @@ idrec/
 		segmap/  				# text files, segmentation columns
 									# of each span of each field of each image
 		system_testset/			# images preserved for system test
+		places					# text file contains all places in the domain
 		generate_segmap.py		# script to generate segmap from images, GUI 
 									# application
 		prepare_data.py			# small scripts to resize, rename, ...
