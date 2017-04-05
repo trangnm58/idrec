@@ -47,16 +47,19 @@ class Recognizer():
 	def post_process(self, image, debug=False):
 		# post process num field
 		text = image.fields[0].get_raw_text()
-		image.fields[0].postprocessed_text = re.sub(r'( |\n)', '', text)
+		text = re.sub(r'( |\n)', '', text)  # remove all white spaces
+		image.fields[0].postprocessed_text = re.sub(r'[^0-9]', '', text)  # remove all non-number
 		
 		# post process name field
 		text = image.fields[1].get_raw_text()
 		text = re.sub(r',+', ' ', text)
+		text = re.sub(r'II', 'H', text)
 		image.fields[1].postprocessed_text = re.sub(r' +', ' ', text)
 		
 		# post process dob field
 		text = image.fields[2].get_raw_text()
-		image.fields[2].postprocessed_text = re.sub(r'( |\n)', '', text)
+		text = re.sub(r'( |\n)', '', text)  # remove all white spaces
+		image.fields[2].postprocessed_text = re.sub(r'[^0-9-]', '', text)  # remove all non-number
 		
 		def cal_dist(string1, string2):
 			"""
@@ -83,7 +86,7 @@ class Recognizer():
 					else:
 						wait_stack.append('+')
 			dist = len([c for c in wait_stack if c != ' ']) + count_replace
-	
+
 			return dist
 
 		def nearest_string(string_list, string, max_dist):
@@ -99,7 +102,7 @@ class Recognizer():
 				if dist < best_dist:
 					best_string = s
 					best_dist = dist
-	
+
 			if best_dist > max_dist:  # string and best string are too different
 				return string
 			
@@ -107,14 +110,16 @@ class Recognizer():
 
 		with io.open("all_data/places", "r", encoding='utf8') as f:
 			text = f.read()
-		places = text.split('\n\n') 
+		places = text.split('\n') 
 		
 		# post process bplace field
 		bplace = image.fields[3].get_raw_text()
+		bplace = re.sub(r'\n', ', ', bplace)
 		image.fields[3].postprocessed_text = nearest_string(places, bplace, len(bplace) // 2)
 		
 		# post process cplace field
 		cplace = image.fields[4].get_raw_text()
+		cplace = re.sub(r'\n', ', ', cplace)
 		image.fields[4].postprocessed_text = nearest_string(places, cplace, len(cplace) // 2)
 		
 		if debug:

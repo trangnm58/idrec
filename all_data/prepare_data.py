@@ -59,14 +59,14 @@ def create_place_list_file(ground_truth_folder):
 				spans = []
 		fields.append(spans)
 		
-		bplace = '\n'.join(fields[-2])
-		cplace = '\n'.join(fields[-1])
+		bplace = ', '.join(fields[-2])
+		cplace = ', '.join(fields[-1])
 		
 		add_to_places(places, bplace)
 		add_to_places(places, cplace)
 	
 	with open("places", "w", encoding="utf8") as f:
-		f.write('\n\n'.join(places))
+		f.write('\n'.join(places))
 		
 
 if __name__ == "__main__":
