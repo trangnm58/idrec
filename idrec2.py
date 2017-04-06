@@ -53,7 +53,7 @@ if __name__ == "__main__":
 		
 		# ignore white spaces and commas
 		matcher = SequenceMatcher(lambda x: x in " \t\n,", ground_truth.lower(), text.lower(), False)
-		print("System test accuracy: {:.2f}%".format(matcher.ratio() * 100)) 
+		print("System test accuracy: {:.2f}%".format(matcher.ratio() * 100))
 
 	elif len(sys.argv) == 2:
 		# run on a custom image

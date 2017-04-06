@@ -21,7 +21,7 @@ BPLACE_TITLE = np.array([[0, 0], [230, 60]], dtype='int')
 CPLACE_FIELD = np.array([[340, 625], [1040, 755]], dtype='int')
 CPLACE_TITLE = np.array([[0, 0], [340, 60]], dtype='int')
 
-TEXT_MIN_WIDTH = 5
+TEXT_MIN_WIDTH = 20
 TEXT_MIN_HEIGHT = 20
 
 

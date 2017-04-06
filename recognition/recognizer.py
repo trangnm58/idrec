@@ -54,6 +54,7 @@ class Recognizer():
 		text = image.fields[1].get_raw_text()
 		text = re.sub(r',+', ' ', text)
 		text = re.sub(r'II', 'H', text)
+		text = re.sub(r'(?=\B)L', 'I ', text)
 		image.fields[1].postprocessed_text = re.sub(r' +', ' ', text)
 		
 		# post process dob field
