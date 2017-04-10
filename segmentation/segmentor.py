@@ -16,6 +16,7 @@ from segmentation.constants import (
 
 CLUSTER_REGION = 15
 MAX_SINGLE_CLUSTER_RANGE = 5
+MAX_SINGLE_CLUSTER_RANGE_NAME = 8
 MAX_SINGLE_CLUSTER_RANGE_NUMBER = 20
 
 
@@ -59,6 +60,8 @@ class Segmentor():
 
 				if image.fields[j].name == 'num':
 					max_range = MAX_SINGLE_CLUSTER_RANGE_NUMBER
+				elif image.fields[j].name == 'name':
+					max_range = MAX_SINGLE_CLUSTER_RANGE_NAME
 				else:
 					max_range = MAX_SINGLE_CLUSTER_RANGE
 
