@@ -89,7 +89,7 @@ class Field():
 	def _get_contour_boxes(self, img):
 		mask = cv2.bitwise_not(img)
 		
-		if cv2.__version__ == '3.1.0':
+		if cv2.__version__[0] == '3':
 			_, contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 		else:
 			contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
