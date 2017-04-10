@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class IdRecConfig(AppConfig):
+class IdRecDemoConfig(AppConfig):
     name = 'idocr'
