@@ -52,9 +52,19 @@ class Recognizer():
 		
 		# post process name field
 		text = image.fields[1].get_raw_text()
+
 		text = re.sub(r',+', ' ', text)
 		text = re.sub(r'II', 'H', text)
-		text = re.sub(r'(?=\B)L', 'I ', text)
+		text = re.sub(r'U(?=[ƠỚỜỢỞỠ])', 'Ư', text)
+		text = re.sub(r'(?<=\B)T[^\b]', 'T', text)
+		text = re.sub(r'ƯO', 'ƯƠ', text)
+		text = re.sub(r'O(?=H)', 'C', text)
+		text = re.sub(r'(?<![N\b])G', 'O', text)
+		text = re.sub(r'Ă(?=[^CMNPT])', 'À', text)
+		text = re.sub(r'Ẵ(?=[CPT])', 'Ắ', text)
+		text = re.sub(r'(?<=\B)L', 'I ', text)
+		text = re.sub(r'(?<=\b)I (?=\b)', 'L', text)
+
 		image.fields[1].postprocessed_text = re.sub(r' +', ' ', text)
 		
 		# post process dob field
