@@ -41,11 +41,16 @@ class ImageToString(RatelimitMixin, View):
             if zipfile.is_zipfile(file):
                 zipped_imgs = zipfile.ZipFile(file)
                 name_list = zipped_imgs.namelist()
-                
                 for n in name_list:
                     data = zipped_imgs.read(n)
-                    img = cv2.imdecode(np.fromstring(data, np.uint8), cv2.IMREAD_UNCHANGED)
-                
+                    try:
+                        img = cv2.imdecode(np.fromstring(data, np.uint8), cv2.IMREAD_UNCHANGED)
+                    except Exception:  # data is not an image, maybe folder
+                        continue
+                    
+                    if img is None:
+                        continue
+                    
                     b64image, text = self._process_image(img)
                     all_text.append(text)
                     all_imgs.append(b64image)
@@ -69,7 +74,7 @@ class ImageToString(RatelimitMixin, View):
             return render(request, "idocr/index.html", {'result': res})
         else:
             return render(request, "idocr/index.html")
-        
+
     def _process_image(self, img):
         image = self.segmentor.segment_as_predict(img)  # Image object
         
@@ -80,7 +85,7 @@ class ImageToString(RatelimitMixin, View):
         
         text = '\n\n'.join([f.postprocessed_text for f in image.fields])
         
-        string = cv2.imencode('.jpg', image.image)[1]
+        string = cv2.imencode('.jpg', img)[1]
         base64_str = b64encode(string)
         
         mime = "image/jpg"

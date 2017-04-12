@@ -118,7 +118,7 @@ class Image():
 			self.base = name.split('.')[0]
 			self.extension = name.split('.')[1]
 
-		self.fields = self._get_fields(img)  # list of infor fields
+		self.fields = self._get_fields()  # list of infor fields
 		for f in self.fields:
 			f.find_text_spans()
 
@@ -137,21 +137,21 @@ class Image():
 			cur_y += height
 		return merged_img
 
-	def _get_fields(self, img):
+	def _get_fields(self):
 		# return all 5 information fields as 5 independent images
-		num = Field(img=img[NUM_FIELD[0][1]:NUM_FIELD[1][1], NUM_FIELD[0][0]:NUM_FIELD[1][0]], name='num')
+		num = Field(img=self.image[NUM_FIELD[0][1]:NUM_FIELD[1][1], NUM_FIELD[0][0]:NUM_FIELD[1][0]], name='num')
 		num.hide_title(NUM_TITLE)
 
-		name = Field(img=img[NAME_FIELD[0][1]:NAME_FIELD[1][1], NAME_FIELD[0][0]:NAME_FIELD[1][0]], name='name')
+		name = Field(img=self.image[NAME_FIELD[0][1]:NAME_FIELD[1][1], NAME_FIELD[0][0]:NAME_FIELD[1][0]], name='name')
 		name.hide_title(NAME_TITLE)
 
-		dob = Field(img=img[DOB_FIELD[0][1]:DOB_FIELD[1][1], DOB_FIELD[0][0]:DOB_FIELD[1][0]], name='dob')
+		dob = Field(img=self.image[DOB_FIELD[0][1]:DOB_FIELD[1][1], DOB_FIELD[0][0]:DOB_FIELD[1][0]], name='dob')
 		dob.hide_title(DOB_TITLE)
 
-		bplace = Field(img=img[BPLACE_FIELD[0][1]:BPLACE_FIELD[1][1], BPLACE_FIELD[0][0]:BPLACE_FIELD[1][0]], name='bplace')
+		bplace = Field(img=self.image[BPLACE_FIELD[0][1]:BPLACE_FIELD[1][1], BPLACE_FIELD[0][0]:BPLACE_FIELD[1][0]], name='bplace')
 		bplace.hide_title(BPLACE_TITLE)
 
-		cplace = Field(img=img[CPLACE_FIELD[0][1]:CPLACE_FIELD[1][1], CPLACE_FIELD[0][0]:CPLACE_FIELD[1][0]], name='cplace')
+		cplace = Field(img=self.image[CPLACE_FIELD[0][1]:CPLACE_FIELD[1][1], CPLACE_FIELD[0][0]:CPLACE_FIELD[1][0]], name='cplace')
 		cplace.hide_title(CPLACE_TITLE)
 
 		fields = [num, name, dob, bplace, cplace]
