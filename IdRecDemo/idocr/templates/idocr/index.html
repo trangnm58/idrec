@@ -22,17 +22,7 @@
 	<div class="container">
 		<h1 class="text-center">ID Recognition Demo System</h1>
 		<div class="row">
-			<div class="col-md-6">
-				{% if image %}
-					<img class="img-responsive" id="image" src="{{ image }}" alt="ID Image" />
-				{% endif %}
-			</div>
-			<div class="col-md-6">
-				<textarea class="form-control" rows="15">{{ text }}</textarea>
-			</div>
-		</div>
-		<div class="row">
-			<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+			<form id="form" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
 				<div class="form-group">
 					<label for="image_file">Upload ID image</label>
 					<input type="file" name="image" id="image_file" onchange="readURL(this);" />
@@ -40,17 +30,25 @@
 				<button class="btn btn-primary" type="submit">Extract ID information</button>
 			</form>
 		</div>
+		{% for r in result %}
+		<div class="row">
+			<div class="col-md-6">
+				<img class="img-responsive" id="image" src="{{ r.image }}" alt="ID Image" />
+			</div>
+			<div class="col-md-6">
+				<textarea class="form-control" rows="18">{{ r.text }}</textarea>
+			</div>
+		</div>
+		{% endfor %}
 	</div>
 	<script>
 	function readURL(input) {
 	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-	
-	        reader.onload = function (e) {
-	            $('#image').attr('src', e.target.result);
-	        };
-	
-	        reader.readAsDataURL(input.files[0]);
+          	var filesize = document.getElementById('image_file').files[0].size;
+          	if (filesize > 100 * 500000) {
+          		alert("The file is too large.");
+          		document.getElementById("form").reset();
+          	}
 	    }
 	}
 	</script>

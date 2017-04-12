@@ -56,7 +56,7 @@ class Recognizer():
 		text = re.sub(r',+', ' ', text)
 		text = re.sub(r'II', 'H', text)
 		text = re.sub(r'U(?=[ƠỚỜỢỞỠ])', 'Ư', text)
-		text = re.sub(r'(?<=\B)T[^\b]', 'T', text)
+		text = re.sub(r'(?<=\B)T[^\b ]', 'T', text)
 		text = re.sub(r'ƯO', 'ƯƠ', text)
 		text = re.sub(r'O(?=H)', 'C', text)
 		text = re.sub(r'(?<![N\b])G', 'O', text)
