@@ -1,8 +1,17 @@
 HEIGHT = 30
 WIDTH = 20
 
+DATASET_FOLDER = "data/"
+PICKLE_DATASET = "pickle_data/"
+DATA_NAME = "data"
 TRAINED_MODELS = "trained_models/"
-MODEL = "model9806_9337_98"
+RANDOM_IDX = "random_idx"
+MODEL = "model"
+
+FRONT = "../all_data/front/"
+BACK = "../all_data/back/"
+SEGMAP = "../all_data/segmap/"
+GROUND_TRUTH = "../all_data/ground_truth/"
 
 LABELS = [',', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
           'a', 'a01', 'a02', 'a03', 'a04', 'a05', 'a1', 'a11', 'a12', 'a2', 'a21', 'a22', 'a23', 'a24',
