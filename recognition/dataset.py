@@ -1,4 +1,5 @@
 from __future__ import division, print_function, unicode_literals
+import os
 from os import listdir
 import json
 import sys
@@ -14,41 +15,29 @@ from recognition.constants import (
 	WIDTH,
 	DATASET_FOLDER,
 	PICKLE_DATASET,
-	DATA_NAME)
+	DATA_NAME,
+	RANDOM_IDX)
 
 
 class Dataset():
-	def __init__(self, data_folder, data_name, file_name=None):
+	def __init__(self, data_folder, data_name):
 		# load dataset from pickle files
 		self.X = None
 		self.Y = None
 		self._load_data(data_folder, data_name)
 
-		self.train_idx = []
-		self.val_idx = []
-		self.test_idx = []
+	def get_dataset(self):
+		if not RANDOM_IDX:
+			idx_list = list(range(self.X.shape[0]))
+			random.shuffle(idx_list)
 
-		if not file_name:
-			# create new training set, validation set and test set
-			self._create_new_train_val_test_set()
+			with open("random_idx", "w") as f:
+				f.write(json.dumps(idx_list))
 		else:
-			# read dataset from files
-			self._read_train_val_test_set(file_name)
+			with open("random_idx", "r") as f:
+				idx_list = json.loads(f.read())
 
-		self.train_idx = np.array(self.train_idx, dtype='int')
-		self.val_idx = np.array(self.val_idx, dtype='int')
-		self.test_idx = np.array(self.test_idx, dtype='int')
-
-	def get_train_dataset(self):
-		return self._get_dataset(self.train_idx)
-
-	def get_val_dataset(self):
-		return self._get_dataset(self.val_idx)
-
-	def get_test_dataset(self):
-		return self._get_dataset(self.test_idx)
-
-	def _get_dataset(self, idx_list):
+		idx_list = np.array(idx_list, dtype='int')
 		m = idx_list.shape[0]
 		X = np.zeros((m, HEIGHT, WIDTH, 1), dtype='float32')
 		Y = np.zeros((m, self.Y.shape[1]), dtype='int')
@@ -62,43 +51,6 @@ class Dataset():
 		with open(data_folder + data_name, "rb") as f:
 			self.X = pickle.load(f)
 			self.Y = pickle.load(f)
-
-	def _create_new_train_val_test_set(self, ratios=(0.9, 0.8)):
-		# select training set, validation set and test set from data randomly
-		train_val_idx = []
-		# seperate train_val and test set
-		for i in range(self.X.shape[0]):
-			r = random.random()
-			if r < ratios[0]:
-				train_val_idx.append(i)
-			else:
-				self.test_idx.append(i)
-		# seperate train and val set
-		for i in range(len(train_val_idx)):
-			r = random.random()
-			if r < ratios[1]:
-				self.train_idx.append(i)
-			else:
-				self.val_idx.append(i)
-
-		random.shuffle(self.train_idx)
-		random.shuffle(self.val_idx)
-		random.shuffle(self.test_idx)
-
-		# save their indexes to files
-		with open("train_val_test_set_{}".format(self.X.shape[0]), "w") as f:
-			f.write(json.dumps({
-				"train_idx": self.train_idx,
-				"val_idx": self.val_idx,
-				"test_idx": self.test_idx
-			}))
-
-	def _read_train_val_test_set(self, file_name):
-		with open(file_name, "r") as f:
-			obj = json.loads(f.read())
-		self.train_idx = obj["train_idx"]
-		self.val_idx = obj["val_idx"]
-		self.test_idx = obj["test_idx"]
 
 
 if __name__ == "__main__":  # process raw data
@@ -130,7 +82,10 @@ if __name__ == "__main__":  # process raw data
 			Y[-1][i] = 1
 
 	X = X.reshape(X.shape[0], HEIGHT, WIDTH, 1).astype('float32')
+	
 	print("Saving...")
+	if not os.path.exists(PICKLE_DATASET):
+		os.makedirs(PICKLE_DATASET)
 	with open("{}/{}".format(PICKLE_DATASET, DATA_NAME), "wb") as f:
 		pickle.dump(X, f, protocol=pickle.HIGHEST_PROTOCOL)
 		pickle.dump(Y, f, protocol=pickle.HIGHEST_PROTOCOL)

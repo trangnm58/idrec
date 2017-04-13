@@ -18,7 +18,6 @@ from segmentation.constants import (
 	WIDTH,
 	PICKLE_DATASET,
 	DATA_NAME,
-	IDX_MAP,
 	TRAINED_MODELS)
 
 
@@ -62,7 +61,7 @@ def build_model(num_of_class):
 	return model
 
 
-def train_model(model, epochs=50):
+def train_model(model, X_train, Y_train, X_val, Y_val, epochs=50):
 	print("Training the model...")
 	# how many examples to look at during each training iteration
 	batch_size = 128
@@ -78,16 +77,17 @@ if __name__ == "__main__":
 	# deal with dataset
 	timer = Timer()
 	timer.start("Loading data")
-	d = Dataset(PICKLE_DATASET, DATA_NAME, IDX_MAP)
-	X_train, Y_train = d.get_train_dataset()
-	X_val, Y_val = d.get_val_dataset()
+	d = Dataset(PICKLE_DATASET, DATA_NAME)
+	X_train, Y_train = d.get_dataset()
+	X_val, Y_val = X_train, Y_train
 	timer.stop()
+	
 	num_of_class = Y_val.shape[1]
 	m = build_model(num_of_class)
 	
 	epochs = 50
 	while True:
-		train_model(m, epochs)
+		train_model(m, X_train, Y_train, X_val, Y_val, epochs)
 		epochs = input("More? ")
 		if not epochs:
 			break
