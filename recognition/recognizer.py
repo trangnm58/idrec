@@ -70,50 +70,24 @@ class Recognizer():
 		text = re.sub(r'( |\n)', '', text)  # remove all white spaces
 		image.fields[2].postprocessed_text = re.sub(r'[^0-9-]', '', text)  # remove all non-number
 		
-		def cal_dist(string1, string2):
-			"""
-			distance = 1 ~ 1 replace | 1 add | 1 remove 
-			"""
-			diff = difflib.ndiff(string1.lower(), string2.lower())
-			diff_chars = list(diff)
+		def cal_ratio(string1, string2):
+			from difflib import SequenceMatcher
+			matcher = SequenceMatcher(lambda x: x in " \t\n,", string1.lower(), string2.lower(), False)
+			return matcher.ratio()
 
-			count_replace = 0
-			wait_stack = []
-			for c in diff_chars:
-				if c[0] == ' ':
-					wait_stack.append(' ')
-				elif c[0] == '-':
-					if wait_stack and wait_stack[-1] == '+':
-						del wait_stack[-1]
-						count_replace += 1
-					else:
-						wait_stack.append('-')
-				elif c[0] == '+':
-					if wait_stack and wait_stack[-1] == '-':
-						del wait_stack[-1]
-						count_replace += 1
-					else:
-						wait_stack.append('+')
-			dist = len([c for c in wait_stack if c != ' ']) + count_replace
-
-			return dist
-
-		def nearest_string(string_list, string, max_dist):
+		def nearest_string(string_list, string):
 			# find best word
 			if not string_list:
 				return string
 	
 			best_string = string_list[0]
-			best_dist = cal_dist(string, best_string)
+			best_ratio = cal_ratio(string, best_string)
 
 			for s in string_list:
-				dist = cal_dist(string, s)
-				if dist < best_dist:
+				ratio = cal_ratio(string, s)
+				if ratio > best_ratio:
 					best_string = s
-					best_dist = dist
-
-			if best_dist > max_dist:  # string and best string are too different
-				return string
+					best_ratio = ratio
 			
 			return best_string
 
@@ -124,12 +98,12 @@ class Recognizer():
 		# post process bplace field
 		bplace = image.fields[3].get_raw_text()
 		bplace = re.sub(r'\n', ', ', bplace)
-		image.fields[3].postprocessed_text = nearest_string(places, bplace, len(bplace) // 2)
+		image.fields[3].postprocessed_text = nearest_string(places, bplace)
 		
 		# post process cplace field
 		cplace = image.fields[4].get_raw_text()
 		cplace = re.sub(r'\n', ', ', cplace)
-		image.fields[4].postprocessed_text = nearest_string(places, cplace, len(cplace) // 2)
+		image.fields[4].postprocessed_text = nearest_string(places, cplace)
 		
 		if debug:
 			with io.open("postprocess_recognized_text.txt", "w", encoding="utf8") as f:
