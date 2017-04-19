@@ -1,7 +1,6 @@
 from __future__ import division, print_function, unicode_literals
 import sys
 import numpy as np
-import matplotlib.pyplot as plt
 # fix random seed for reproducibility
 seed = 13
 np.random.seed(seed)
@@ -62,17 +61,16 @@ def build_model(num_of_class):
 	return model
 
 
-def train_model(model, X_train, Y_train, X_val, Y_val, epochs=100):
+def train_model(model, X_train, Y_train, X_val, Y_val, epochs=50):
 	print("Training the model...")
 	# how many examples to look at during each training iteration
 	batch_size = 128
 	# the training may be slow depending on your computer
-	history = model.fit(X_train,
+	model.fit(X_train,
 			  Y_train,
 			  batch_size=batch_size,
 			  nb_epoch=epochs,
 			  validation_data=(X_val, Y_val))
-	return history
 
 
 if __name__ == "__main__":
@@ -87,22 +85,15 @@ if __name__ == "__main__":
 	num_of_class = Y_val.shape[1]
 	m = build_model(num_of_class)
 	
-	epochs = 100
-	history = train_model(m, X_train, Y_train, X_val, Y_val, epochs)
+	epochs = 50
+	while True:
+		train_model(m, X_train, Y_train, X_val, Y_val, epochs)
+		epochs = input("More? ")
+		if not epochs:
+			break
+		else:
+			epochs = int(epochs)
 	
-	# summarize history for accuracy
-	plt.plot(history.history['acc'])
-	plt.title('')
-	plt.ylabel('')
-	plt.xlabel('')
-	plt.show()
-	# summarize history for loss
-	plt.plot(history.history['loss'])
-	plt.title('')
-	plt.ylabel('')
-	plt.xlabel('')
-	plt.show()
-
 	name = input("Model's name or 'n': ")
 	if name != 'n':
 		model_handler.save_model(m, TRAINED_MODELS + name)
