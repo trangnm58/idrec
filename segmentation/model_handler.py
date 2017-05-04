@@ -2,6 +2,8 @@ from __future__ import division, print_function, unicode_literals
 import sys
 from os import listdir
 import numpy as np
+seed = 13
+np.random.seed(seed)
 from keras.models import model_from_json
 from sklearn.metrics import f1_score, classification_report, confusion_matrix
 from sklearn.model_selection import KFold, train_test_split

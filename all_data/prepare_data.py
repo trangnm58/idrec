@@ -4,7 +4,6 @@ Page Nguyen
 
 Some small scripts to prepare data
 """
-
 import os
 import cv2
 

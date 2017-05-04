@@ -1,7 +1,6 @@
 from __future__ import division, print_function, unicode_literals
 import sys
 import numpy as np
-# fix random seed for reproducibility
 seed = 13
 np.random.seed(seed)
 

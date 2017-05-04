@@ -94,4 +94,6 @@ ENV/
 
 segmentation/data/
 segmentation/pickle_data/
+localization_cnn/data/
+localization_cnn/pickle_data/
 output_text/

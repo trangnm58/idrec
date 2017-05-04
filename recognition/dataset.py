@@ -7,6 +7,9 @@ import random
 import cv2
 import pickle
 import numpy as np
+seed = 13
+random.seed(seed)
+np.random.seed(seed)
 
 sys.path.insert(0, "..")
 from utils import Timer

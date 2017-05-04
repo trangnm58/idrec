@@ -7,6 +7,9 @@ import random
 import cv2
 import pickle
 import numpy as np
+seed = 13
+random.seed(seed)
+np.random.seed(seed)
 
 sys.path.insert(0, "..")
 from utils import Timer
@@ -87,7 +90,7 @@ if __name__ == "__main__":  # process raw data
 	print("Saving...")
 	if not os.path.exists(PICKLE_DATASET):
 		os.makedirs(PICKLE_DATASET)
-	with open("{}/{}".format(PICKLE_DATASET, DATA_NAME), "wb") as f:
+	with open(PICKLE_DATASET + DATA_NAME, "wb") as f:
 		pickle.dump(X, f, protocol=pickle.HIGHEST_PROTOCOL)
 		pickle.dump(Y, f, protocol=pickle.HIGHEST_PROTOCOL)
 

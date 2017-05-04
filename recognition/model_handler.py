@@ -2,6 +2,8 @@ from __future__ import division, print_function, unicode_literals
 import sys
 from os import listdir
 import numpy as np
+seed = 13
+np.random.seed(seed)
 from keras.models import model_from_json
 from sklearn.metrics import f1_score, classification_report, confusion_matrix
 from sklearn.model_selection import KFold, train_test_split
@@ -140,14 +142,14 @@ def k_fold_cv():
 		f.write("\nAverage F1 score: {}\n".format(np.mean(F1s)))
 
 if __name__ == "__main__":
-	# k_fold_cv()
-	d = Dataset(PICKLE_DATASET, DATA_NAME)
-	X, Y = d.get_dataset()
+	k_fold_cv()
+	# d = Dataset(PICKLE_DATASET, DATA_NAME)
+	# X, Y = d.get_dataset()
 
-	X_train, X_test, Y_train, Y_test = train_test_split(
-	X, Y, test_size=0.1, random_state=42)
+	# X_train, X_test, Y_train, Y_test = train_test_split(
+	# X, Y, test_size=0.1, random_state=42)
 
-	m = load_model(TRAINED_MODELS + MODEL)
+	# m = load_model(TRAINED_MODELS + MODEL)
 
-	evaluate_model(m, X_test, Y_test)
-	g_confusion_matrix(m, X_test, Y_test, True)
+	# evaluate_model(m, X_test, Y_test)
+	# g_confusion_matrix(m, X_test, Y_test, True)
